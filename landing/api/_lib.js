@@ -1,8 +1,9 @@
 // Funzioni comuni per le API della landing (i file che iniziano con _ non diventano endpoint su Vercel).
 
 async function callScript(payload) {
-  const url = process.env.APPS_SCRIPT_URL;
-  const secret = process.env.SHARED_SECRET;
+  // Accetta anche i nomi usati nella prima versione (APPS_SCRIPT_URL, SHARED_SECRET).
+  const url = (process.env.GOOGLE_SCRIPT_URL || process.env.APPS_SCRIPT_URL || '').trim();
+  const secret = (process.env.APPS_SCRIPT_SECRET || process.env.SHARED_SECRET || '').trim();
   if (!url || !secret) return { ok: false, error: 'server_not_configured' };
   try {
     const r = await fetch(url, {

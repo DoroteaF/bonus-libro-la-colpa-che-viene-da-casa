@@ -305,7 +305,7 @@ details p{margin:12px 0 0}
       : !/^[^\s@<>"]+@[^\s@<>"]+\.[a-z]{2,}$/i.test(data.email) ? 'email_invalid'
       : !data.privacy ? 'privacy_required' : '';
     function fail(code) {
-      err.textContent = ERRORS[code] || 'Qualcosa non ha funzionato. Riprova tra qualche minuto.';
+      err.textContent = ERRORS[code] || ('Qualcosa non ha funzionato. Riprova tra qualche minuto.' + (code ? ' (codice: ' + code + ')' : ''));
       err.classList.add('show');
       if (FIELD[code]) { $(FIELD[code]).setAttribute('aria-invalid', 'true'); $(FIELD[code]).focus(); }
     }

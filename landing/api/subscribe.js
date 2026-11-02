@@ -27,6 +27,9 @@ module.exports = async (req, res) => {
     newsletter: b.newsletter === true,
     source: String(b.source || 'landing').slice(0, 40)
   });
-  if (!out.ok || !out.bonusUrl) return send(res, 502, { ok: false, error: out.error || 'error' });
-  return send(res, 200, { ok: true, nome: out.nome, bonusUrl: out.bonusUrl });
+  if (!out.ok) return send(res, 502, { ok: false, error: out.error || 'error' });
+  // Il link della cartella dei bonus sta nella variabile BONUS_DRIVE_URL di Vercel.
+  const bonusUrl = (process.env.BONUS_DRIVE_URL || out.bonusUrl || '').trim();
+  if (!bonusUrl) return send(res, 502, { ok: false, error: 'bonus_url_missing' });
+  return send(res, 200, { ok: true, nome: out.nome || nome, bonusUrl });
 };

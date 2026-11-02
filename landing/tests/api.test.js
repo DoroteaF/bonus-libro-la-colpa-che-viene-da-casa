@@ -2,8 +2,9 @@ const test = require('node:test');
 const assert = require('node:assert');
 const { fakeReq, fakeRes, mockScript } = require('./helpers');
 
-process.env.APPS_SCRIPT_URL = 'https://script.google.com/macros/s/TEST/exec';
-process.env.SHARED_SECRET = 'segreto-di-prova';
+process.env.GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/TEST/exec';
+process.env.APPS_SCRIPT_SECRET = 'segreto-di-prova';
+process.env.BONUS_DRIVE_URL = 'https://drive.google.com/drive/folders/X';
 
 const subscribe = require('../api/subscribe');
 const info = require('../api/info');
@@ -53,12 +54,12 @@ test('subscribe: solo POST, e errore chiaro senza variabili su Vercel', async ()
   let res = fakeRes();
   await subscribe(fakeReq({ method: 'GET' }), res);
   assert.equal(res.statusCode, 405);
-  const saved = process.env.APPS_SCRIPT_URL; delete process.env.APPS_SCRIPT_URL;
+  const saved = process.env.GOOGLE_SCRIPT_URL; delete process.env.GOOGLE_SCRIPT_URL;
   res = fakeRes();
   await subscribe(fakeReq({ method: 'POST', body: valid }), res);
   assert.equal(res.statusCode, 502);
   assert.equal(res.json().error, 'server_not_configured');
-  process.env.APPS_SCRIPT_URL = saved;
+  process.env.GOOGLE_SCRIPT_URL = saved;
 });
 
 test('subscribe: se lo script risponde male non si mostra nessun link', async () => {
@@ -75,4 +76,13 @@ test('info: dati del titolare senza la chiave segreta', async () => {
   await info(fakeReq(), res);
   assert.equal(res.json().controller, 'Bianca Fiorentini');
   assert.equal(res.json().secret, undefined);
+});
+
+test('subscribe: il link mostrato è quello di BONUS_DRIVE_URL su Vercel', async () => {
+  process.env.BONUS_DRIVE_URL = 'https://drive.google.com/drive/folders/DA-VERCEL?usp=sharing';
+  mockScript(() => ({ ok: true, nome: 'Anna', bonusUrl: 'https://drive.google.com/drive/folders/DALLO-SCRIPT' }));
+  const res = fakeRes();
+  await subscribe(fakeReq({ method: 'POST', body: valid }), res);
+  assert.equal(res.json().bonusUrl, 'https://drive.google.com/drive/folders/DA-VERCEL?usp=sharing');
+  process.env.BONUS_DRIVE_URL = 'https://drive.google.com/drive/folders/X';
 });

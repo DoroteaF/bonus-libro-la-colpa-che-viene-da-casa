@@ -7,18 +7,19 @@
  *
  * Lo chiamano solo le funzioni della landing su Vercel (cartella api/), che
  * conoscono la chiave segreta qui sotto: l'indirizzo dello script e il link
- * dei bonus non compaiono mai nel codice della pagina.
+ * dei bonus (variabile BONUS_DRIVE_URL su Vercel) non compaiono mai nel codice della pagina.
  * Nessuna email viene inviata: lo script salva i dati e restituisce il link.
  */
 
 var CONFIG = {
-  // Deve essere identica alla variabile SHARED_SECRET impostata su Vercel.
+  // Deve essere identica alla variabile APPS_SCRIPT_SECRET impostata su Vercel.
   SECRET: 'vhrbUfvYpOKwhSAkVpFn8P8DIGP90fOCbt3PGzX3sEE',
 
   BOOK_TITLE: 'La Colpa che Viene da Casa',
   CONTROLLER: 'Bianca Fiorentini',
 
-  // Cartella Drive con i due bonus (condivisa con "Chiunque abbia il link").
+  // Cartella Drive con i due bonus. Il link mostrato alle lettrici è quello della
+  // variabile BONUS_DRIVE_URL su Vercel; questo serve solo di riserva.
   BONUS_URL: 'https://drive.google.com/drive/folders/1VxvDNPHyHzNCba4GioD55jyGcd-QhqPd?usp=sharing',
 
   // Scheda del foglio dove salvare i contatti (creata se non esiste).

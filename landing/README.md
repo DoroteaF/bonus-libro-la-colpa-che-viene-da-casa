@@ -39,16 +39,19 @@ Crea il repository, carica tutta la cartella `landing` (con `api`, `apps-script`
 
 1. **Add New › Project › Import** del repository.
 2. **Root Directory:** `landing` · Framework preset: **Other** (nessun comando di build).
-3. **Environment Variables:**
+3. **Settings › Environment Variables**, ambiente **Production**: aggiungi queste tre variabili.
 
-| Nome | Valore |
+| Nome (Key) | Valore (Value) |
 |---|---|
-| `APPS_SCRIPT_URL` | l'URL `/exec` copiato al punto 1.5 |
-| `SHARED_SECRET` | `vhrbUfvYpOKwhSAkVpFn8P8DIGP90fOCbt3PGzX3sEE` |
+| `GOOGLE_SCRIPT_URL` | l'URL della tua app web Apps Script, quello che finisce con `/exec` (punto 1.5) |
+| `APPS_SCRIPT_SECRET` | `vhrbUfvYpOKwhSAkVpFn8P8DIGP90fOCbt3PGzX3sEE` |
+| `BONUS_DRIVE_URL` | `https://drive.google.com/drive/folders/1VxvDNPHyHzNCba4GioD55jyGcd-QhqPd?usp=sharing` |
 
-4. **Deploy**. Se aggiungi o cambi una variabile dopo, fai **Redeploy**.
+- `APPS_SCRIPT_SECRET` va copiato identico, senza spazi prima o dopo: deve combaciare con quello scritto in cima a `Code.gs`. Non metterlo mai nella pagina.
+- `BONUS_DRIVE_URL` è il link della cartella che le lettrici aprono dopo il modulo: se un giorno cambi cartella, basta cambiare questa variabile.
+- Se aggiungi o cambi le variabili dopo il primo deploy: **Deployments › i tre puntini dell'ultimo deploy › Redeploy**, altrimenti la funzione non le legge.
 
-`SHARED_SECRET` è la stessa chiave scritta in cima a `Code.gs`: se la cambi, cambiala in entrambi i posti e non metterla mai nella pagina. Grazie a questa chiave il link della cartella dei bonus non compare nel codice della pagina: lo riceve solo chi invia il modulo.
+4. **Deploy**.
 
 ## 4. Prova
 
